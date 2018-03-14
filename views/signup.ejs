@@ -1,9 +1,37 @@
-<% include('header') %>
+<%- include('./header') %>
 <div class="ui grid">
   <div class="four wide column"></div>
   <div class="eight wide column">
-    <form  method="post">
-
+    <form class="ui form segment" method="post" enctype="multipart/form-data">
+      <div class='field required'>
+        <label>username</label>
+        <input type="text" name="name" placeholder="usernmae">
+      </div>
+      <div class="field required">
+        <label >password</label>
+        <input type="password" name="password" placeholder="password">
+      </div>
+      <div>
+        <label>confirm your password</label>
+        <input type="password" name='repassword' placeholder="repeat your password">
+      </div>
+      <div class="field required">
+        <label>gender</label>
+        <select name="gender" class='ui compact selection dropdown'>
+          <option value="m">male</option>
+          <option value="f">female</option>
+          <option value="x">secret</option>
+        </select>
+      </div>
+      <div class="field required">
+        <label>avatar</label>
+        <input type="file" name="avatar">
+      </div>
+      <div class="field required">
+        <label>resume</label>
+        <textarea name="bio" rows="5"></textarea>
+      </div>
+      <input type="submit" class="ui button fluid" value="sign up">
     </form>
   </div>
 </div>
