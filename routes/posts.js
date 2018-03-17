@@ -2,15 +2,17 @@ const express = require('express');
 const router = express.Router();
 
 const checkLogin = require('../middlewares/check').checkLogin ;
+const PostModel = require('../models/posts');
 
 router.get('/',function(req,res,next){
-  res.send('index page');
+  res.render('posts');
 });
 router.get('/create',checkLogin,function(req,res,next){
-  res.send('write article page');
+  res.render('create');
 });
 router.post('/create',checkLogin,function(req,res,next){
-  res.send('write article');
+  //res.send('write article');
+  const
 });
 router.get('/:postId',checkLogin,function(req,res,next){
   res.send('article page');

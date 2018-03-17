@@ -5,7 +5,6 @@ const flash = require('connect-flash');
 const config = require('config-lite')(__dirname);
 const MongoStore = require('connect-mongo')(session);
 const routes = require('./routes');
-//const pkg = require('./package');
 
 const app = express();
 
@@ -20,7 +19,7 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   cookie: {
-    maxAge: config.session.maxAge,
+    maxAge: config.session.maxAge
   },
   store: new MongoStore({
     url: config.mongodb
@@ -28,14 +27,18 @@ app.use(session({
 }));
 
 app.use(flash());
+app.use(require('express-formidable')({
+  uploadDir: path.join(__dirname,'public/img'),
+  keepExtensions: true,
+}));
 app.locals.blog = {
   title: 'hello',
   description: 'the first post'
 };
 app.use(function(req,res,next){
-  res.locals.user = {'_id':01};//req.session.user;
-  res.locals.success = '0'; //req.flash('success').toString();
-  res.locals.error = '1'; //req.flash('error').toString();
+  res.locals.user = req.session.user;//req.session.user;
+  res.locals.success = req.flash('success').toString(); //req.flash('success').toString();
+  res.locals.error = req.flash('error').toString(); //req.flash('error').toString();
   next();
 });
 routes(app);
