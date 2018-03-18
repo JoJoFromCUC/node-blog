@@ -84,13 +84,53 @@ router.get('/:postId/edit',checkLogin,function(req,res,next){
 router.post('/:postId/edit',checkLogin,function(req,res,next){
   const title = req.fields.title;
   const content = req.fields.content;
-  //try{
-    //if(!title.length)
- // }
-  //res.send('edit article');
+  const author = req.session.user._id;
+  const postId = req.params.postId;
+
+  try{
+    if(!title.length){
+      throw new Error('标题不能为空');
+    }
+    if(!content.length){
+      throw new Error('内容不能为空');
+    }
+  }catch(e){
+    req.flash('error',e.message);
+    return res.redirect('back');
+  }
+
+  PostModel.getRawPostById(postId)
+    .then(function(post){
+      if(!post){
+        throw new Error('文章不存在');
+      }
+      if(author.toString() !== post.author._id.toString()){
+        throw new Error('没有修改权限');
+      }
+      PostModel.updatePostById(postId,{title: title,content: content})
+        .then(function(){
+          req.flash('success','修改成功');
+          res.redirect(`/posts/${postId}`);
+        });
+    });
 })
 router.get('/:postId/remove',checkLogin,function(req,res,next){
-  res.send('remove article');
+  const author = req.session.user._id;
+  const postId = req.params.postId;
+  PostModel.getRawPostById(postId)
+  .then(function(post){
+    if(!post){
+      throw new Error('文章不存在');
+    }
+    if(post.author._id.toString() !== author.toString()){
+      throw new Error('没有删除权限');
+    }
+    PostModel.delPostById(postId)
+    .then(function(){
+      req.flash('success','删除成功');
+      res.redirect('/posts');
+    })
+  })
 });
 
 module.exports = router;
