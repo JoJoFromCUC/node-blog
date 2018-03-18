@@ -33,7 +33,7 @@ module.exports = {
     const query = {};
     if(author) query.author = author;
     return Post
-    .find({query})
+    .find(query)
     .populate({path:'author',model:'User'})
     .sort({_id: -1})
     .addCreatedAt()
@@ -44,5 +44,16 @@ module.exports = {
     return Post
     .update({_id: id},{$inc:{pv:1}})
     .exec();
+  },
+  getRawPostById: function getRawPostById(postId){
+    return Post.findOne({_id: postId})
+    .populate({path: 'author',model:'User'})
+    .exec();
+  },
+  updatePostById: function updatePostById(postId,data){
+    return Post.update({_id: postId },{$set: data}).exec();
+  },
+  delPostById: function delPostById(postId){
+    return Post.deleteOne({_id:postId}).exec();
   }
 }

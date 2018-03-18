@@ -6,9 +6,10 @@ const PostModel = require('../models/posts');
 
 router.get('/',function(req,res,next){
   //res.render('posts');
-  const author = req.query.author;
+  const author = req.query.author;//author存在与否均可
   PostModel.getPosts(author)
     .then(function(posts){
+      console.log(posts);
       res.render('posts',{posts: posts});
     })
   .catch(next);
@@ -42,20 +43,51 @@ router.post('/create',checkLogin,function(req,res,next){
   PostModel.create(post)
   .then(function(result){
     post = result.ops[0];
-    console.log(result);
     req.flash('success','发布成功');
-    res.redirect(`/posts/:${post._id}`);
+    res.redirect(`/posts/${post._id}`);
   })
   .catch(next);
 });
+
 router.get('/:postId',checkLogin,function(req,res,next){
-  res.send('article page');
+  const postId = req.params.postId;
+  Promise.all([
+    PostModel.getPostById(postId),
+    PostModel.incPv(postId)
+  ])
+  .then(function(result){
+    const post = result[0];
+    if(!post){
+      throw new Error('文章不存在');
+    }
+    res.render('post',{post: post});
+  })
+  .catch(next);
 });
+
 router.get('/:postId/edit',checkLogin,function(req,res,next){
-  res.send('edit article page');
+  const author = req.session.user._id;
+  const postId = req.params.postId;
+  PostModel.getRawPostById(postId)
+    .then(function(post){
+      if(!post){
+        throw new Error('文章不存在');
+      }
+      if(author.toString() !== post.author._id.toString()){
+        throw new Error('没有修改权限');
+      }
+      res.render('edit',{post: post});
+    })
+    .catch(next);
+  //res.send('edit article page');
 });
 router.post('/:postId/edit',checkLogin,function(req,res,next){
-  res.send('edit article');
+  const title = req.fields.title;
+  const content = req.fields.content;
+  //try{
+    //if(!title.length)
+ // }
+  //res.send('edit article');
 })
 router.get('/:postId/remove',checkLogin,function(req,res,next){
   res.send('remove article');

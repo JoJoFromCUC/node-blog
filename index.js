@@ -32,8 +32,8 @@ app.use(require('express-formidable')({
   keepExtensions: true,
 }));
 app.locals.blog = {
-  title: 'hello',
-  description: 'the first post'
+  title: '生花',
+  description: '以梦为马  以笔为缰'
 };
 app.use(function(req,res,next){
   res.locals.user = req.session.user;//req.session.user;
