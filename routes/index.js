@@ -11,5 +11,5 @@ module.exports = function(app){
     if(!res.headersSent){
       res.status(404).render('404');
     }
-  })
+  });
 }

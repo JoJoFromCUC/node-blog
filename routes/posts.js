@@ -5,7 +5,13 @@ const checkLogin = require('../middlewares/check').checkLogin ;
 const PostModel = require('../models/posts');
 
 router.get('/',function(req,res,next){
-  res.render('posts');
+  //res.render('posts');
+  const author = req.query.author;
+  PostModel.getPosts(author)
+    .then(function(posts){
+      res.render('posts',{posts: posts});
+    })
+  .catch(next);
 });
 router.get('/create',checkLogin,function(req,res,next){
   res.render('create');
@@ -27,17 +33,18 @@ router.post('/create',checkLogin,function(req,res,next){
    res.redirect('back');
   }
 
-  let blog = {
+  let post = {
     author: author,
     title: title,
     content: content
   };
 
-  PostModel.create(blog)
+  PostModel.create(post)
   .then(function(result){
-    blog = result.ops[0];
+    post = result.ops[0];
+    console.log(result);
     req.flash('success','发布成功');
-    res.redirect(`/posts/${post._id}`);
+    res.redirect(`/posts/:${post._id}`);
   })
   .catch(next);
 });
