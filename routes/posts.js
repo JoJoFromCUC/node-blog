@@ -59,7 +59,8 @@ router.get('/:postId',checkLogin,function(req,res,next){
   ])
   .then(function(result){
     const post = result[0];
-    const comments = result[1];
+    const comments = result[2];
+    console.log('comments:',comments);
     if(!post){
       throw new Error('文章不存在');
     }

@@ -34,7 +34,7 @@ router.get('/:commentId/remove',checkLogin,function(req,res,next){
   //res.send('remove comment');
   const commentId = req.params.commentId;
   const author = req.session.user._id;
-
+ console.log('commentId:',commentId);
   CommentModel.getCommentById(commentId)
   .then(function(comment){
     if(!comment){
