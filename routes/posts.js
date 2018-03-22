@@ -54,14 +54,19 @@ router.get('/:postId',checkLogin,function(req,res,next){
   const postId = req.params.postId;
   Promise.all([
     PostModel.getPostById(postId),
-    PostModel.incPv(postId)
+    PostModel.incPv(postId),
+    CommentModel.getComments(postId)
   ])
   .then(function(result){
     const post = result[0];
+    const comments = result[1];
     if(!post){
       throw new Error('文章不存在');
     }
-    res.render('post',{post: post});
+    res.render('post',{
+      post: post,
+      comments: comments
+    });
   })
   .catch(next);
 });
