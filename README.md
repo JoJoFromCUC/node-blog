@@ -1,2 +1,2 @@
 # node-blog
-simple SPA based on nodejs
+simple blog application based on nodejs

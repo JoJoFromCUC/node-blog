@@ -5,6 +5,8 @@ const flash = require('connect-flash');
 const config = require('config-lite')(__dirname);
 const MongoStore = require('connect-mongo')(session);
 const routes = require('./routes');
+const winston = require('winston');
+const expressWinston = require('express-winston');
 
 const app = express();
 
@@ -41,7 +43,26 @@ app.use(function(req,res,next){
   res.locals.error = req.flash('error').toString(); //req.flash('error').toString();
   next();
 });
+
+app.use(expressWinston.logger({
+  transports:[
+    new (winston.transports.Console)({
+      json: true,
+      colorize: true
+    }),
+    new winston.transports.File({
+      filename: 'logs/success.log'
+    })
+  ]
+}))
 routes(app);
+
+
+app.use(function(err,req,res,next){
+  console.error(err);
+  req.flash('error'.err.message);
+  res.redirect('/posts');
+})
 app.listen(config.port,function(){
   console.log(`app listening on port ${config.port}`);
 });

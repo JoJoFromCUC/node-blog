@@ -1,5 +1,18 @@
+<%- include('./components/background') %>
     <script>
       $(document).ready(function(){
+
+        var bg = document.getElementById('bg');
+        bg.width = window.innerWidth ;
+        bg.height = window.innerHeight ;
+        drawRandomBalls(bg,60,true);
+        //添加窗口尺寸改变响应监听
+        $(window).resize(resizeCanvas);
+      //窗口尺寸改变响应（修改canvas大小）
+        function resizeCanvas() {
+          bg.width = window.innerWidth ;
+          bg.height = window.innerHeight ;
+        };
           $('.ui .dropdown').dropdown();
           $('post-content .avatar-link').popup({
             inline: true,
