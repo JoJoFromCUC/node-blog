@@ -43,20 +43,33 @@ app.use(function(req,res,next){
   res.locals.error = req.flash('error').toString(); //req.flash('error').toString();
   next();
 });
+//normal req logger
+// app.use(expressWinston.Logger({
+//   transports:[
+//     new (winston.transports.Console)({
+//       json: true,
+//       colorize: true
+//     }),
+//     new (winston.transports.File)({
+//       filename: 'logs/success.log'
+//     })
+//   ]
+// }))
 
-app.use(expressWinston.logger({
-  transports:[
-    new (winston.transports.Console)({
-      json: true,
-      colorize: true
-    }),
-    new winston.transports.File({
-      filename: 'logs/success.log'
-    })
-  ]
-}))
 routes(app);
 
+// error req logger
+// app.use(expressWinston.errorLogger({
+//   transports:[
+//     new (winston.transports.Console)({
+//       json: true,
+//       colorize: true
+//     }),
+//     new (winston.transports.File)({
+//       filename: 'logs/error.log'
+//     })
+//   ]
+// }))
 
 app.use(function(err,req,res,next){
   console.error(err);
