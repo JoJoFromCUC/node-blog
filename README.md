@@ -8,11 +8,11 @@ use:
 
   npm start
 ```
-<figure >
-    <img src="./pics/signup.PNG" width="300"/>
-    <img src="./pics/signin.PNG" width="300"/>
+<div align='center' >
+    <img src="./pics/signup.PNG" width="60%"/>
+    <img src="./pics/signin.PNG" width="60%"/>
 </figure>
 <center >
-    <img src="./pics/posts.PNG" width="300"/>
-    <img src="./pics/comment.PNG" width="300"/>
+    <img src="./pics/posts.PNG" width="60%"/>
+    <img src="./pics/comment.PNG" width="60%"/>
 </center>
